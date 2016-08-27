@@ -1,0 +1,1 @@
+{"version":3,"file":null,"sources":["../src/index.js"],"sourcesContent":["console.log('asdf');\n\nconst x = () => {\n    console.log('qwqwe');\n};"],"names":["console","log"],"mappings":";;;AAAAA,QAAQC,GAAR,CAAY,MAAZ,EAEA;;"}
