@@ -1,6 +1,40 @@
 const gulp = require('gulp');
 const browserSync = require('browser-sync').create();
 
+const noop = () => {};
+
+const options = {
+    minify: true,
+    paths: {
+        public: 'public'
+    }
+};
+
+gulp.task('set-dev', () => {
+    options.minify = false;
+});
+
+gulp.task('sass', function () {
+    const sass = require('gulp-sass');
+    const pleeease = require('gulp-pleeease');
+
+    gulp.src('src/main.scss')
+        .pipe(sass({
+            outputStyle: 'expanded',
+            importer: require('node-sass-import')
+        })
+        .on('error', sass.logError))
+        .pipe(pleeease({
+            minifier: options.minify,
+            mqpacker: true
+        }))
+        .pipe(gulp.dest('public'));
+});
+
+gulp.task('sass:watch', ['sass'], () => {
+    gulp.watch('src/**/*.scss', ['sass']);
+});
+
 gulp.task('browser-sync', () => {
     const superstatic = require('superstatic');
     const config = require('./firebase.json').hosting;
@@ -14,8 +48,6 @@ gulp.task('browser-sync', () => {
 var cache;
 gulp.task('js', done => {
     const rollup = require( 'rollup' );
-    const fs = require('fs');
-
     const babel = require('rollup-plugin-babel');
     const commonjs = require('rollup-plugin-commonjs');
     const nodeResolve = require('rollup-plugin-node-resolve');
@@ -23,8 +55,7 @@ gulp.task('js', done => {
     const uglify = require('rollup-plugin-uglify');
     const replace = require('rollup-plugin-replace');
 
-
-    const cfg = {
+    const config = {
         entry: 'src/index.js',
         cache,
         plugins: [
@@ -37,12 +68,13 @@ gulp.task('js', done => {
                 'process.env.NODE_ENV': '"production"',
                 'process.env.VUE_ENV': '"browser"'
             }),
-            // uglify()
+            // options.minify ? uglify() : noop
         ]
     };
 
+    if (options.minify) { config.plugins.push(uglify()); }
 
-    return rollup.rollup(cfg).then(bundle => {
+    return rollup.rollup(config).then(bundle => {
         cache = bundle;
 
         return bundle.write({
@@ -57,4 +89,6 @@ gulp.task('js:watch', () => {
     gulp.watch(['src/**/*.js'], ['js']);
 });
 
-gulp.task('dev', ['browser-sync', 'js', 'js:watch']);
+gulp.task('dev', ['set-dev', 'browser-sync', 'js', 'sass', 'js:watch', 'sass:watch']);
+gulp.task('build', ['js', 'sass']);
+gulp.task('default', ['build'])
