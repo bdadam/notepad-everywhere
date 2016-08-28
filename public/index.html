@@ -11,6 +11,13 @@
     <div class="container">
         <aside>
             <button class="btn-new-memo">+ New memo</button>
+            <form @submit.prevent="">
+                <label for="search-memo">
+                    Title or content
+                    <input type="text">
+                    <button type="submit">Search</button>
+                </label>
+            </form>
             <ul class="memo-list">
                 <li><a href="#">Title of the memo</a></li>
                 <li><a href="#">Title of the memo</a></li>
