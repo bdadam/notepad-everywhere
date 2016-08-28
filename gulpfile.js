@@ -1,41 +1,41 @@
 const gulp = require('gulp');
-const browserSync = require('browser-sync').create();
 
 const noop = () => {};
 
 const options = {
-    minify: true,
+    production: true,
     paths: {
         public: 'public'
     }
 };
 
 gulp.task('set-dev', () => {
-    options.minify = false;
+    options.production = false;
 });
 
 gulp.task('sass', function () {
     const sass = require('gulp-sass');
     const pleeease = require('gulp-pleeease');
 
-    gulp.src('src/main.scss')
+    gulp.src('src/scss/main.scss')
         .pipe(sass({
             outputStyle: 'expanded',
             importer: require('node-sass-import')
         })
         .on('error', sass.logError))
         .pipe(pleeease({
-            minifier: options.minify,
+            minifier: options.production,
             mqpacker: true
         }))
         .pipe(gulp.dest('public'));
 });
 
 gulp.task('sass:watch', ['sass'], () => {
-    gulp.watch('src/**/*.scss', ['sass']);
+    gulp.watch('src/scss/**/*.scss', ['sass']);
 });
 
 gulp.task('browser-sync', () => {
+    const browserSync = require('browser-sync').create();
     const superstatic = require('superstatic');
     const config = require('./firebase.json').hosting;
 
@@ -43,6 +43,8 @@ gulp.task('browser-sync', () => {
         open: false,
         middleware: superstatic({ config: config })
     });
+
+    gulp.watch("public/*").on('change', browserSync.reload);
 });
 
 var cache;
@@ -54,9 +56,11 @@ gulp.task('js', done => {
     const eslint = require('rollup-plugin-eslint');
     const uglify = require('rollup-plugin-uglify');
     const replace = require('rollup-plugin-replace');
+    const strip = require('rollup-plugin-strip');
+
 
     const config = {
-        entry: 'src/index.js',
+        entry: 'src/js/index.js',
         cache,
         plugins: [
             eslint(),
@@ -67,12 +71,14 @@ gulp.task('js', done => {
             replace({
                 'process.env.NODE_ENV': '"production"',
                 'process.env.VUE_ENV': '"browser"'
-            }),
-            // options.minify ? uglify() : noop
+            })
         ]
     };
 
-    if (options.minify) { config.plugins.push(uglify()); }
+    if (options.production) {
+        config.plugins.push(strip());
+        config.plugins.push(uglify());
+    }
 
     return rollup.rollup(config).then(bundle => {
         cache = bundle;
@@ -86,7 +92,7 @@ gulp.task('js', done => {
 });
 
 gulp.task('js:watch', () => {
-    gulp.watch(['src/**/*.js'], ['js']);
+    gulp.watch(['src/js/**/*.js'], ['js']);
 });
 
 gulp.task('dev', ['set-dev', 'browser-sync', 'js', 'sass', 'js:watch', 'sass:watch']);

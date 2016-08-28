@@ -5,7 +5,32 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    {{ asdf }}
+    <header class="site-header">
+        <a href="/">Home</a>
+    </header>
+    <div class="container">
+        <aside>
+            <button class="btn-new-memo">+ New memo</button>
+            <ul class="memo-list">
+                <li><a href="#">Title of the memo</a></li>
+                <li><a href="#">Title of the memo</a></li>
+                <li><a href="#">Title of the memo</a></li>
+            </ul>
+        </aside>
+        <main>
+            <h1>Access your notes everywhere</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+            <md-viewer></md-viewer>
+            <md-editor></md-editor>
+        </main>
+    </div>
+    <footer class="site-footer">
+        powered by <a href="https://bdadam.com/">bdadam.com</a>
+        &copy; 2016
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
     <script src="/index.js"></script>
 </body>
 </html>

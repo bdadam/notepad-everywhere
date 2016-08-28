@@ -9914,17 +9914,135 @@ setTimeout(function () {
 module.exports = Vue;
 });
 
-var Vue = interopDefault(vue_common);
+interopDefault(vue_common);
 
-var x = new Vue({
-    data: { asdf: 'qwe' },
-    el: document.body
+/**
+ * Creates a unary function that invokes `func` with its argument transformed.
+ *
+ * @private
+ * @param {Function} func The function to wrap.
+ * @param {Function} transform The argument transform.
+ * @returns {Function} Returns the new function.
+ */
+
+/**
+ * Checks if `value` is a host object in IE < 9.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+ */
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+
+var funcProto = Function.prototype;
+var funcToString = funcProto.toString;
+
+/** Used to check objects for own properties. */
+var objectCtorString = funcToString.call(Object);
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+
+var ponyfill = createCommonjsModule(function (module) {
+'use strict';
+
+module.exports = function symbolObservablePonyfill(root) {
+	var result;
+	var Symbol = root.Symbol;
+
+	if (typeof Symbol === 'function') {
+		if (Symbol.observable) {
+			result = Symbol.observable;
+		} else {
+			result = Symbol('observable');
+			Symbol.observable = result;
+		}
+	} else {
+		result = '@@observable';
+	}
+
+	return result;
+};
 });
 
+var ponyfill$1 = interopDefault(ponyfill);
+
+
+var require$$0 = Object.freeze({
+	default: ponyfill$1
+});
+
+var index = createCommonjsModule(function (module) {
+/* global window */
+'use strict';
+
+module.exports = interopDefault(require$$0)(commonjsGlobal || window || commonjsGlobal);
+});
+
+interopDefault(index);
+
+/**
+ * Prints a warning in the console if it exists.
+ *
+ * @param {String} message The warning message.
+ * @returns {void}
+ */
+
+/**
+ * Composes single-argument functions from right to left. The rightmost
+ * function can take multiple arguments as it provides the signature for
+ * the resulting composite function.
+ *
+ * @param {...Function} funcs The functions to compose.
+ * @returns {Function} A function obtained by composing the argument functions
+ * from right to left. For example, compose(f, g, h) is identical to doing
+ * (...args) => f(g(h(...args))).
+ */
+
+// console.log(createStore);
+
+//
+// const x = new Vue({
+//     data: { asdf: 'qwe' },
+//     el: document.body
+// });
+
 // console.log(Vue);
 // console.log(Vue);
 
-console.log('QWE');
+window.firebase.initializeApp({
+    apiKey: 'AIzaSyAlHga3HJLrFs31WNUCnuNS8X5Gczkv6tY',
+    authDomain: 'notepad-everywhere.firebaseapp.com',
+    databaseURL: 'https://notepad-everywhere.firebaseio.com',
+    storageBucket: 'notepad-everywhere.appspot.com'
+});
 
 }());
 //# sourceMappingURL=index.js.map

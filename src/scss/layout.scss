@@ -1,0 +1,36 @@
+body, html {
+  width: 100%;
+  height: 100vh;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 80px;
+}
+
+.container {
+  display: flex;
+  flex: 1 auto;
+  flex-direction: row;
+}
+
+aside {
+  width: 25%;
+  flex: 1 auto;
+  overflow: auto;
+}
+
+main {
+  width: 75%;
+  flex: 1 auto;
+  overflow: auto;
+}
